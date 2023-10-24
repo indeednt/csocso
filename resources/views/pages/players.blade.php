@@ -21,7 +21,12 @@
                 @foreach ($players as $player)
                     <div class="card shadow p-2 m-2  d-flex flex-row justify-content-between">
                         <h3>{{$player->name}}</h3>
-                        <a class="btn btn-danger p-2" href={{ route('players.destroy', [$player->id]) }}>Törlés</a>
+
+                        {!! Form::open(['action' => ['App\Http\Controllers\PlayerController@destroy', $player->id], 'method' => 'delete']) !!}
+                        {!!  Form::submit('Törlés', ['class' => 'btn btn-danger p-2']) !!}
+                        {!!  Form::close('Játékos hozzáadása') !!}
+
+
                     </div>
                 @endforeach
             </div>

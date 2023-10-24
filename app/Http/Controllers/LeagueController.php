@@ -15,7 +15,7 @@ class LeagueController extends Controller
 
     public function create()
     {
-        return view('pages.leagues_add', []);
+        return view('pages.leagues_create', []);
     }
 
 

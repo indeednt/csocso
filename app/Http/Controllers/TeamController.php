@@ -16,9 +16,19 @@ class TeamController extends Controller
 
     public function create()
     {
-        return view('pages.teams_add', []);
+        return view('pages.teams_create', []);
     }
 
+    public function store(Request $request)
+    {
+        $team = Team::create([
+            'name'=> $request->name,
+            'kapusId' => $request->kapusId,
+            'csatarId' => $request->csatarId
+        ]);
+
+        return redirect('/teams');
+    }
 
     public function destroy($id)
     {

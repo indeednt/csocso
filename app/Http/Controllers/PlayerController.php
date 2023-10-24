@@ -16,7 +16,16 @@ class PlayerController extends Controller
 
     public function create()
     {
-        return view('pages.players_add', []);
+        return view('pages.players_create', []);
+    }
+
+    public function store(Request $request)
+    {
+        $name = $request->name;
+
+        $player = Player::create(['name'=> $name]);
+
+        return redirect('/players');
     }
 
 
@@ -24,7 +33,6 @@ class PlayerController extends Controller
     {
         $player = Player::find($id);
         $player->delete();
-        return redirect()->route('players.index')
-        ->with('success', 'Player deleted successfully');
+        return redirect()->route('players.index')->with('success', 'Player deleted successfully');
     }
 }

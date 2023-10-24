@@ -16,9 +16,8 @@ return new class extends Migration
         Schema::create('teams', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            // TODO onDelete
-            $table->foreignId('kapusId')->references('id')->on('players');
-            $table->foreignId('csatarId')->references('id')->on('players');
+            $table->foreignId('kapusId')->references('id')->on('players')->cascadeOnDelete();
+            $table->foreignId('csatarId')->references('id')->on('players')->cascadeOnDelete();
             $table->timestamps();
         });
     }

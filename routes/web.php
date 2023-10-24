@@ -26,12 +26,16 @@ Route::get('/players', PlayerController::class .'@index')->name('players.index')
 
 Route::get('/players/create', PlayerController::class . '@create')->name('players.create');
 
+Route::post('/players', PlayerController::class . '@store')->name('players.store');
+
 Route::delete('/players/{player}', PlayerController::class .'@destroy')->name('players.destroy');
 
 
 Route::get('/teams', TeamController::class .'@index')->name('teams.index');
 
 Route::get('/teams/create', TeamController::class . '@create')->name('teams.create');
+
+Route::post('/teams', TeamController::class . '@store')->name('teams.store');
 
 Route::delete('/teams/{player}', TeamController::class .'@destroy')->name('teams.destroy');
 
