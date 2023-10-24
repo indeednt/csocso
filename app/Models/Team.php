@@ -1,0 +1,55 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Team extends Model
+{
+    use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'kapusId',
+        'csatarId'
+    ];
+
+    protected $table = 'teams';
+
+
+
+    public function kapus(){
+        return $this->hasOne(Player::class, 'id', 'kapusId');
+    }
+
+    public function csatar(){
+        return $this->hasOne(Player::class, 'id', 'csatarId');
+    }
+
+    public function leagues(){
+        return $this->belongsToMany(League::class);
+    }
+
+    public function gamesWhereTeam1(){
+        return $this->hasMany(Game::class, 'team_1_id', 'id');
+    }
+
+    public function gamesWhereTeam2(){
+        return $this->hasMany(Game::class, 'team_2_id', 'id');
+    }
+
+    public function countCrawls(){
+        return $this->gamesWhereTeam1->where('team_1_score', 0)->count()
+             + $this->gamesWhereTeam2->where('team_2_score', 0)->count();
+    }
+
+    public function addPlayer(){
+
+    }
+}
