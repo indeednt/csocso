@@ -12,17 +12,22 @@
     @include('layouts.menu')
 
     <div class="container">
-        <h1 class="text-center m-3">Játékos létrehozása</h1>
+        <h1 class="text-center m-3">Játékos módosítása</h1>
+
         <div class="row">
             <div class="col d-flex justify-content-center">
-                {!! Form::open(['action' => ['App\Http\Controllers\PlayerController@store']]) !!}
+
+                {!! Form::open(['action' => ['App\Http\Controllers\PlayerController@update', $player->id], 'method' => 'put']) !!}
+
+                {!! Form::model($player, ['route' => ['players.update', $player->id]]) !!}
 
                 {!! Form::label('name', 'Játékos neve:') !!}
 
-                {!!  Form::text('name', "",  ['class' => 'form-control shadow', 'style' => 'width: 300px']) !!}
+                {!!  Form::text('name', $player->name,  ['class' => 'form-control shadow', 'style' => 'width: 300px']) !!}
 
-                {!!  Form::submit('Játékos hozzáadása', ['class' => 'btn btn-success shadow mt-2 ']) !!}
-                {!!  Form::close() !!}
+                {!!  Form::submit('Játékos módosítása', ['class' => 'btn btn-success shadow mt-2 ']) !!}
+                
+                {!! Form::close('Játékos hozzáadása') !!}
             </div>
         </div>
     </div>

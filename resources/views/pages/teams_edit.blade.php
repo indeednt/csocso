@@ -15,18 +15,19 @@
         <h1 class="text-center m-3">Csapat hozzáadása</h1>
         <div class="row">
             <div class="col d-flex justify-content-center">
-                {!! Form::open(['action' => ['App\Http\Controllers\TeamController@store']]) !!}
-                
+                {!! Form::open(['action' => ['App\Http\Controllers\TeamController@update', $team->id], 'method' => 'put']) !!}
+                {!! Form::model($team, ['route' => ['teams.update', $team->id]]) !!}
+
                 {!! Form::label('name', 'Csapat neve:') !!}
-                {!!  Form::text('name', '',  ['class' => 'form-control shadow', 'style' => 'width: 300px']) !!}
+                {!!  Form::text('name', $team->name,  ['class' => 'form-control shadow', 'style' => 'width: 300px']) !!}
                 <br>
-                {!! Form::label('csatar', 'Csatár:') !!}
-                {!! Form::select('csatar_id', $players) !!}
+                {!! Form::label('csatar_id', 'Csatár:') !!}
+                {!! Form::select('csatar_id', $players, $team->csatar->id) !!}
                 <br class="m-2">
-                {!! Form::label('kapus', 'Kapus:') !!}
-                {!! Form::select('kapus_id', $players) !!}
+                {!! Form::label('kapus_id', 'Kapus:') !!}
+                {!! Form::select('kapus_id', $players, $team->kapus->id) !!}
                 <br>
-                {!!  Form::submit('Játékos hozzáadása', ['class' => 'btn btn-success shadow mt-2']) !!}
+                {!!  Form::submit('Játékos hozzáadása', ['class' => 'btn btn-success shadow m-2']) !!}
                 {!!  Form::close('Csapat hozzáadása') !!}
             </div>
         </div>

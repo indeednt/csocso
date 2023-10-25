@@ -13,26 +13,44 @@
 
     <div class="container">
         <div class="row">
-            <div class="col w-75 mx-auto justify-content-center">
+            <div class="col">
 
-            <h1 class="text-center">Bajnokságok</h1>
+                <h1 class="text-center m-3">Bajnokságok</h1>
 
-            <div >
-                @foreach ($leagues as $league)
-                    <div class="card shadow p-2 m-2  d-flex flex-row justify-content-between align-items-center">
-                        <div class='col'>
-                            <h3>{{$league->name}}</h3>
-                            <p>Nyertes csapat: ASd{{$league->winnerOfLeague()}}</p>
+                <div>
+                    @foreach ($leagues as $league)
+                        <div class="card shadow p-2 m-2  d-flex flex-row justify-content-end">
+                            <div class='col ms-2'>
+                                <h3>{{$league->name}}</h3>
+                                <span class="badge bg-secondary">Kezdve: {{$league->startDate()}}</span>
+                                <br>
+                                @if($league->status() =='finished')         
+                                    <span class="badge bg-success">Befejezve: {{$league->finishDate()}}</span>
+                                    <p>Nyertes csapat: {{$league->winnerOfLeague()}}</p>
+                                @else
+                                    <span class="badge bg-secondary">Befejezettlen</span>     
+                                @endif
+                            </div>
+
+                            
+                            <div class='col d-flex flex-row justify-content-end'>
+                                {!! Form::open(['action' => ['App\Http\Controllers\LeagueController@show', $league->id], 'method' => 'get']) !!}
+                                {!! Form::submit('Megtekintés', ['class' => 'btn btn-success p-2 m-2']) !!}
+                                {!! Form::close('Megtekintés') !!}
+
+                                {!! Form::open(['action' => ['App\Http\Controllers\LeagueController@edit', $league->id], 'method' => 'get']) !!}
+                                {!! Form::submit('Módosítás', ['class' => 'btn btn-warning p-2 m-2']) !!}
+                                {!! Form::close('Módosítás') !!}
+
+                                {!! Form::open(['action' => ['App\Http\Controllers\LeagueController@destroy', $league->id], 'method' => 'delete']) !!}
+                                {!! Form::submit('Törlés', ['class' => 'btn btn-danger p-2 m-2']) !!}
+                                {!! Form::close('Törlés') !!}
+                            </div>
                         </div>
-
-
-                        <a class="btn btn-danger p-2" href={{ route('leagues.destroy', [$league->id]) }}>Törlés</a>
-                    </div>
-                @endforeach
-            </div>
-
-            <a class="btn btn-success text-center" href={{ route('leagues.create') }}>Bajnokság hozzáadása</a>
-
+                        
+                    @endforeach
+                </div>
+                <a class="btn btn-success text-center" href={{ route('leagues.create') }}>Bajnokság hozzáadása</a>
             </div>
         </div>
     </div>

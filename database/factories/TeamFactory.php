@@ -19,8 +19,8 @@ class TeamFactory extends Factory
     {
         return [
             'name' => $this->faker->name . ' csapat',
-            'kapusId' => Player::inRandomOrder()->first()->id,
-            'csatarId' => Player::inRandomOrder()->first()->id,
+            'kapus_id' => Player::inRandomOrder()->first()->id,
+            'csatar_id' => Player::inRandomOrder()->first()->id,
         ];
     }
 }

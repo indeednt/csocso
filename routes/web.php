@@ -17,9 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', LeagueController::class .'@index')->name('leagues.index');
 
 
 Route::get('/players', PlayerController::class .'@index')->name('players.index');
@@ -27,6 +25,10 @@ Route::get('/players', PlayerController::class .'@index')->name('players.index')
 Route::get('/players/create', PlayerController::class . '@create')->name('players.create');
 
 Route::post('/players', PlayerController::class . '@store')->name('players.store');
+
+Route::get('/players/{player}/edit', PlayerController::class .'@edit')->name('players.edit');
+
+Route::put('/players/{player}', PlayerController::class .'@update')->name('players.update');
 
 Route::delete('/players/{player}', PlayerController::class .'@destroy')->name('players.destroy');
 
@@ -37,6 +39,10 @@ Route::get('/teams/create', TeamController::class . '@create')->name('teams.crea
 
 Route::post('/teams', TeamController::class . '@store')->name('teams.store');
 
+Route::get('/teams/{team}/edit', TeamController::class .'@edit')->name('teams.edit');
+
+Route::put('/teams/{team}', TeamController::class .'@update')->name('teams.update');
+
 Route::delete('/teams/{player}', TeamController::class .'@destroy')->name('teams.destroy');
 
 
@@ -45,4 +51,12 @@ Route::get('/leagues', LeagueController::class .'@index')->name('leagues.index')
 
 Route::get('/leagues/create', LeagueController::class . '@create')->name('leagues.create');
 
-Route::delete('/leagues/{player}', LeagueController::class .'@destroy')->name('leagues.destroy');
+Route::post('/leagues', LeagueController::class . '@store')->name('leagues.store');
+
+Route::get('/leagues/{leagues}/edit', LeagueController::class . '@edit')->name('leagues.edit');
+
+Route::get('/leagues/{league}', LeagueController::class .'@show')->name('leagues.show');
+
+Route::put('/leagues/{team}', LeagueController::class .'@update')->name('leagues.update');
+
+Route::delete('/leagues/{league}', LeagueController::class .'@destroy')->name('leagues.destroy');

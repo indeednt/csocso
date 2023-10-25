@@ -16,8 +16,8 @@ class Team extends Model
      */
     protected $fillable = [
         'name',
-        'kapusId',
-        'csatarId'
+        'kapus_id',
+        'csatar_id'
     ];
 
     protected $table = 'teams';
@@ -25,11 +25,11 @@ class Team extends Model
 
 
     public function kapus(){
-        return $this->hasOne(Player::class, 'id', 'kapusId');
+        return $this->hasOne(Player::class, 'id', 'kapus_id');
     }
 
     public function csatar(){
-        return $this->hasOne(Player::class, 'id', 'csatarId');
+        return $this->hasOne(Player::class, 'id', 'csatar_id');
     }
 
     public function leagues(){

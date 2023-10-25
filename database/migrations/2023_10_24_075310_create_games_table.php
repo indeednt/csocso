@@ -21,7 +21,6 @@ return new class extends Migration
             $table->foreignId('team_2_id')->references('id')->on('teams')->cascadeOnDelete();
             $table->integer('team_1_score')->unsigned()->default(0);
             $table->integer('team_2_score')->unsigned()->default(0);
-            $table->enum('state', ['not_played','played', 'being_played'])->default('not_played');
             $table->timestamps();
         });
     }

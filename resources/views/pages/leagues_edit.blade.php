@@ -12,16 +12,17 @@
     @include('layouts.menu')
 
     <div class="container">
-        <h1 class="text-center m-3">Bajnokság létrehozása</h1>
+    <h1 class="text-center m-3">Bajnokság módosítása</h1>
         <div class="row">
-            <div class="col d-flex justify-content-center">
+            <div class="col d-flex justify-content-center">           
+                {!! Form::open(['action' => ['App\Http\Controllers\LeagueController@update', $league->id], 'method' => 'put']) !!}
+                {!! Form::model($league, ['route' => ['leagues.update', $league->id]]) !!}
 
-                {!! Form::open(['action' => ['App\Http\Controllers\LeagueController@store']]) !!}
                 {!! Form::label('name', 'Bajnokság neve:', ['class' => 'awesome']) !!}
 
-                {!!  Form::text('name', "",  ['class' => 'form-control shadow', 'style' => 'width: 300px']) !!}
+                {!!  Form::text('name', $league->name,  ['class' => 'form-control shadow', 'style' => 'width: 300px']) !!}
 
-                {!!  Form::submit('Bajnokság hozzáadása', ['class' => 'btn btn-success shadow mt-2 ']) !!}
+                {!!  Form::submit('Bajnokság módosítása', ['class' => 'btn btn-success shadow mt-2 ']) !!}
                 {!!  Form::close() !!}
             </div>
         </div>

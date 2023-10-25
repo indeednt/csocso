@@ -29,6 +29,18 @@ class PlayerController extends Controller
     }
 
 
+    public function edit($id)
+    {
+        return view('pages.players_edit', ['player' => Player::find($id)]);
+    }
+
+    public function update(Request $request, $id){
+        $player = Player::find($id);
+        $player->update($request->all());
+        return redirect()->route('players.index')
+        ->with('success', 'Player updated successfully.');
+    }
+    
     public function destroy($id)
     {
         $player = Player::find($id);
