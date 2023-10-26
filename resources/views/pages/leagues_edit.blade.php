@@ -19,11 +19,17 @@
                 {!! Form::model($league, ['route' => ['leagues.update', $league->id]]) !!}
 
                 {!! Form::label('name', 'Bajnokság neve:', ['class' => 'awesome']) !!}
-
                 {!!  Form::text('name', $league->name,  ['class' => 'form-control shadow', 'style' => 'width: 300px']) !!}
 
-                {!!  Form::submit('Bajnokság módosítása', ['class' => 'btn btn-success shadow mt-2 ']) !!}
-                {!!  Form::close() !!}
+                @if ($errors->has('name'))
+                    <span class="text-danger">{{ $errors->first('name') }}</span>
+                    <br>
+                @endif
+
+                <div class="col">
+                    {!!  Form::submit('Bajnokság módosítása', ['class' => 'btn btn-success shadow mt-2 mx-auto', 'style' => 'width: 300px']) !!}
+                    {!!  Form::close() !!}
+                </div>
             </div>
         </div>
     </div>

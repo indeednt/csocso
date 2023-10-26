@@ -18,11 +18,17 @@
                 {!! Form::open(['action' => ['App\Http\Controllers\PlayerController@store']]) !!}
 
                 {!! Form::label('name', 'Játékos neve:') !!}
+                {!! Form::text('name', "",  ['class' => 'form-control shadow', 'style' => 'width: 300px']) !!}
 
-                {!!  Form::text('name', "",  ['class' => 'form-control shadow', 'style' => 'width: 300px']) !!}
+                @if ($errors)
+                    <span class="text-danger">{{ $errors->first() }}</span>
+                    <br>
+                @endif
 
-                {!!  Form::submit('Játékos hozzáadása', ['class' => 'btn btn-success shadow mt-2 ']) !!}
-                {!!  Form::close() !!}
+                <div class="col">
+                    {!! Form::submit('Játékos hozzáadása', ['class' => 'btn btn-success shadow mt-2 mx-auto', 'style' => 'width: 300px']) !!}
+                    {!! Form::close() !!}
+                </div>
             </div>
         </div>
     </div>

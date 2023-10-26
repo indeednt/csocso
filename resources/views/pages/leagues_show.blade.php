@@ -17,111 +17,85 @@
                 <h1 class="m-3">{{$league->name}}</h1>
                 @if($league->status() =='finished')         
                     <span class="badge bg-success">Befejezve: {{$league->finishDate()}}</span>
-                    <p>Nyertes csapat: {{$league->winnerOfLeague()}}</p>
+                    <p>Nyertes csapat: {{$league->winner()->name}}</p>
                 @else
                     <span class="badge bg-secondary">Befejezettlen</span>     
                 @endif
             </div>
         </div>
 
-
         <div class="row">
             <div class="col">
-
                 <h2 class="text-center">Összes meccsek</h2>
+                @foreach ($league->games as $game)
+                    <div class="card shadow mb-2 p-1">
 
-                <div >
-                    @foreach ($league->games as $game)
-                        <div class="card shadow m-1 p-1">
-                            @if($game->status() == 'played')         
-                                <p>Befejezve: {{$game->updated_at}}</p> 
-                            @endif
-                            <div class="row align-items-center">
-                                <div class="col-lg-5 col-md-6 ">
-                                    <div class="row align-items-center">
+                        @if($game->status() == 'played')
+                            <span class="badge bg-success m-1">Befejezve: {{$game->updated_at->format('Y.m.d H:i')}}</span>
+                        @endif
+
+                        <div class="row align-items-center m-1  pt-1">
+                            <div class="col-xl-5 col-lg-12 ">
+                                <div class="row align-items-center">
                                     @if($game->team_1_score == 10)         
-                                        <span class="badge bg-warning ms-3 me-2">{{$game->team_1->name}}</span>
+                                        <span class="badge bg-warning fs-6">{{$game->team_1->name}}</span>
                                     @else
-                                        <span class="badge bg-secondary">{{$game->team_1->name}}</span>    
+                                        <span class="badge bg-secondary fs-6">{{$game->team_1->name}}</span>    
                                     @endif
-                                    <p class="text-center">{{$game->team_1_score}}</p>
-                                    </div>
-
-                                </div>
-
-
-                                <div class="col-lg-2 col-md-6">
-                                    <p class="text-center">VS</p>
-                                </div>
-
-                                <div class="col-lg-5 col-md-6">
-
-                                    
-                                    @if($game->team_2_score == 10)         
-                                        <span class="badge bg-warning">{{$game->team_2->name}}</span>
-                                    @else
-                                        <span class="badge bg-secondary">{{$game->team_2->name}}</span>    
-                                    @endif
-                                    <br>
-
-                                    <p class="text-center">{{$game->team_2_score}}</p>
-
-                                    
+                                    <h5 class="text-center">{{$game->team_1_score}}</h5>
                                 </div>
                             </div>
+
+                            <div class="col-xl-2 col-lg-12">
+                                <p class="text-center">VS</p>
+                            </div>
+
+                            <div class="col-xl-5 col-lg-12">
+                                <div class="row align-items-center">
+                                    @if($game->team_2_score == 10)         
+                                        <span class="badge bg-warning fs-6">{{$game->team_2->name}}</span>
+                                    @else
+                                        <span class="badge bg-secondary fs-6">{{$game->team_2->name}}</span>    
+                                    @endif
+                                    <h5 class="text-center">{{$game->team_2_score}}</h5>
+                                </div>
+                            </div>                            
                         </div>
-                    @endforeach
-                </div>
+
+                        @if($game->status() != 'played')         
+                            {!! Form::open(['action' => ['App\Http\Controllers\GameController@edit', $game->id], 'method' => 'get']) !!}
+                            {!! Form::submit('Játék', ['class' => 'btn btn-success p-2 m-2']) !!}
+                            {!! Form::close() !!}
+                        @endif
+                    </div>
+                @endforeach
             </div>
 
-
             <div class="col">
-
                 <h2 class="text-center">Toplista</h2>
-
                 <div >
-                    @foreach ($league->games as $game)
-                        <div class="card shadow m-1 p-1">
-                            @if($game->status() == 'played')         
-                                <p>Befejezve: {{$game->updated_at}}</p> 
-                            @endif
-                            
-                            <div class="row">
-                                <div class="col">
-
-                                    @if($game->team_1_score == 10)         
-                                        <span class="badge bg-warning">{{$game->team_1->name}}</span>
-                                    @else
-                                        <span class="badge bg-secondary">{{$game->team_1->name}}</span>    
-                                    @endif
-                                    <br>
-                                    @if($game->team_2_score == 10)         
-                                        <span class="badge bg-warning">{{$game->team_2->name}}</span>
-                                    @else
-                                        <span class="badge bg-secondary">{{$game->team_2->name}}</span>    
-                                    @endif
-                                </div>
-                                <div class="col">
-                                    <p>{{$game->team_1_score}}</p>
-                                    <p>{{$game->team_2_score}}</p>
-                                </div>
-                            </div>
+                    @foreach ($league->topList() as $team)
+                        <div class="card shadow m-2 p-2">
+                            <span class="badge bg-secondary fs-5">{{$team->name}}</span>    
+                            <h5 class="text-center">Nyerések száma: {{$team->gamesWon($league->id)}}</h5>
                         </div>
                     @endforeach
                 </div>
             </div>
 
             <div class="col">
-
                 <h2 class="text-center">Mászó toplista</h2>
+                @if ( empty($league->crawlingList()) )
+                    <h4 class="text-center text-muted">Senki nem mászott még</h4>
+                @else
+                    @foreach ($league->crawlingList() as $team)
+                        <div class="card shadow m-2 p-2">
+                            <span class="badge bg-secondary fs-5">{{$team->name}}</span>    
 
-                <div >
-                    @foreach ($league->games as $game)
-                        <div class="card shadow m-1 p-1">
-                            <h1>1. {{  implode(',', $league->crawlingList()) }}</h1>
+                            <h5 class="text-center">Mászás száma: {{$team->gamesWon($league->id)}}</h5>
                         </div>
                     @endforeach
-                </div>
+                @endif
             </div>
         </div>
     </div>

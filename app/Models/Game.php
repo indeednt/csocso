@@ -16,7 +16,6 @@ class Game extends Model
      */
     protected $fillable = [
         'league_id',
-        'date',
         'team_1_id',
         'team_2_id',
         'team_1_score',
@@ -24,7 +23,6 @@ class Game extends Model
     ];
 
     protected $table = 'games';
-
 
     public function league(){
         return $this->belongsTo(League::class);
@@ -44,28 +42,6 @@ class Game extends Model
         : $this->team_2();
     }
 
-    public function winnerId(){
-        return $this->team_1_score > $this->team_2_score
-        ? $this->team_1_id
-        : $this->team_2_id;
-    }
-
-    public function crawlingTeam(){
-        if($this->team_1_score == 0){
-            return $this->team_1();
-        }
-        if($this->team_2_score == 0){
-            return $this->team_2();
-        }
-        return null;
-    }
-
-
-    public function getWinnerAttribute()
-    {
-        return $this->winner();
-    }
-
     public function status(){
         if($this->team_1_score == 0 && $this->team_2_score == 0){
             return 'not_played';
@@ -75,5 +51,4 @@ class Game extends Model
         }
         return 'being_played';
     }
-
 }

@@ -16,18 +16,21 @@
 
         <div class="row">
             <div class="col d-flex justify-content-center">
-
                 {!! Form::open(['action' => ['App\Http\Controllers\PlayerController@update', $player->id], 'method' => 'put']) !!}
-
                 {!! Form::model($player, ['route' => ['players.update', $player->id]]) !!}
 
                 {!! Form::label('name', 'Játékos neve:') !!}
-
                 {!!  Form::text('name', $player->name,  ['class' => 'form-control shadow', 'style' => 'width: 300px']) !!}
 
-                {!!  Form::submit('Játékos módosítása', ['class' => 'btn btn-success shadow mt-2 ']) !!}
-                
-                {!! Form::close('Játékos hozzáadása') !!}
+                @if ($errors)
+                    <span class="text-danger">{{ $errors->first() }}</span>
+                    <br>
+                @endif
+
+                <div class="col">
+                    {!!  Form::submit('Játékos módosítása', ['class' => 'btn btn-success shadow mt-2 mx-auto', 'style' => 'width: 300px']) !!}
+                    {!! Form::close() !!}
+                </div>
             </div>
         </div>
     </div>

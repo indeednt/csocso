@@ -12,7 +12,7 @@
     @include('layouts.menu')
 
     <div class="container">
-        <h1 class="text-center m-3">Csapat hozzáadása</h1>
+        <h1 class="text-center m-3">Csapat módosítása</h1>
         <div class="row">
             <div class="col d-flex justify-content-center">
                 {!! Form::open(['action' => ['App\Http\Controllers\TeamController@update', $team->id], 'method' => 'put']) !!}
@@ -27,8 +27,16 @@
                 {!! Form::label('kapus_id', 'Kapus:') !!}
                 {!! Form::select('kapus_id', $players, $team->kapus->id) !!}
                 <br>
-                {!!  Form::submit('Játékos hozzáadása', ['class' => 'btn btn-success shadow m-2']) !!}
-                {!!  Form::close('Csapat hozzáadása') !!}
+
+                @if ($errors)
+                    <span class="text-danger">{{ $errors->first() }}</span>
+                    <br>
+                @endif
+                
+                <div class="col">
+                    {!!  Form::submit('Játékos hozzáadása', ['class' => 'btn btn-success shadow m-2 mx-auto', 'style' => 'width: 300px']) !!}
+                    {!!  Form::close() !!}
+                </div>
             </div>
         </div>
     </div>

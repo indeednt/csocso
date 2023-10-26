@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePlayerRequest;
+use App\Http\Requests\UpdatePlayerRequest;
 use App\Models\Player;
 use Illuminate\Http\Request;
 
@@ -19,32 +21,29 @@ class PlayerController extends Controller
         return view('pages.players_create', []);
     }
 
-    public function store(Request $request)
+    public function store(StorePlayerRequest $request)
     {
-        $name = $request->name;
-
-        $player = Player::create(['name'=> $name]);
-
+        $data = $request->validated();
+        $player = Player::create($data);
         return redirect('/players');
     }
-
 
     public function edit($id)
     {
         return view('pages.players_edit', ['player' => Player::find($id)]);
     }
 
-    public function update(Request $request, $id){
+    public function update(UpdatePlayerRequest $request, $id){
+        $data = $request->validated();
         $player = Player::find($id);
         $player->update($request->all());
-        return redirect()->route('players.index')
-        ->with('success', 'Player updated successfully.');
+        return redirect()->route('players.index');
     }
     
     public function destroy($id)
     {
         $player = Player::find($id);
         $player->delete();
-        return redirect()->route('players.index')->with('success', 'Player deleted successfully');
+        return redirect()->route('players.index');
     }
 }

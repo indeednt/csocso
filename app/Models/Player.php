@@ -20,7 +20,6 @@ class Player extends Model
 
     protected $table = 'players';
 
-
     public function team(){
         return $this->belongsTo(Team::class);
     }

@@ -15,14 +15,20 @@
         <h1 class="text-center m-3">Bajnokság létrehozása</h1>
         <div class="row">
             <div class="col d-flex justify-content-center">
-
                 {!! Form::open(['action' => ['App\Http\Controllers\LeagueController@store']]) !!}
-                {!! Form::label('name', 'Bajnokság neve:', ['class' => 'awesome']) !!}
 
+                {!! Form::label('name', 'Bajnokság neve:', ['class' => 'awesome']) !!}
                 {!!  Form::text('name', "",  ['class' => 'form-control shadow', 'style' => 'width: 300px']) !!}
 
-                {!!  Form::submit('Bajnokság hozzáadása', ['class' => 'btn btn-success shadow mt-2 ']) !!}
-                {!!  Form::close() !!}
+                @if ($errors->has('name'))
+                    <span class="text-danger">{{ $errors->first('name') }}</span>
+                    <br>
+                @endif
+
+                <div class="col">
+                    {!!  Form::submit('Bajnokság hozzáadása', ['class' => 'btn btn-success shadow mt-2 mx-auto', 'style' => 'width: 300px']) !!}
+                    {!!  Form::close() !!}
+                </div>
             </div>
         </div>
     </div>

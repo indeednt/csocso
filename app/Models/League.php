@@ -24,8 +24,7 @@ class League extends Model
         return $this->hasMany(Game::class);
     }
 
-    // TODO translate
-    public function sorsol(){
+    public function generateGames(){
         $teams = Team::all();
 
         $games = [];
@@ -34,84 +33,51 @@ class League extends Model
             for($k = $i+1; $k<$teams->count(); $k++){
                 array_push($games, Game::create([
                     'league_id' => $this->id,
-                    'date' => now(),
                     'team_1_id' => $teams[$i]->id,
                     'team_2_id' => $teams[$k]->id]));
             }
         }
     }
 
-
-    public function sorsolFactory(){
-        $teams = Team::all();
-
-        $games = [];
-
-
-
-        for($i = 0; $i<$teams->count(); $i++){
-            for($k = $i+1; $k<$teams->count(); $k++){
-                array_push($games, Game::create([
-                    'league_id' => $this->id,
-                    'date' => now(),
-                    'team_1_id' => $teams[$i]->id,
-                    'team_2_id' => $teams[$k]->id,
-                    'team_1_score' => 10,
-                    'team_2_score' => mt_rand(0, 9)]));
-            }
-        }
-    }
-
-    public function winnerOfLeague(){
-        $winnerList = [];
-        foreach ($this->games as $game) {
-            
-            if(!isset($winnerList[$game->winnerId()])){
-                $winnerList[$game->winnerId()] = 1;
-            }
-
-            $winnerList[$game->winnerId()]++;
-        }
-
-        $max = max($winnerList);
-
-        $winner = array_search($max, $winnerList);
-
-        return $winner;
-
-       // return $this->games()->get()->;
-       // sortByDesc('Winner')->first();
-    }
-    
-    public function listAllGames(){
-
-    }
-
     public function topList(){
-        
+        $teams = $this->teams();
+        usort($teams, function($a, $b)
+        {
+            return $a->gamesWon($this->id) < $b->gamesWon($this->id);
+        });
+        return $teams;
     }
 
     public function crawlingList(){
-        $crawlingList = [];
-        foreach ($this->games as $game) {
-            if($game->crawlingTeam() != null){
-                if( !isset($crawlingList[$game->crawlingTeam->id]) ){
-                    $crawlingList[$game->crawlingTeam->id] = 1;
-                }else{
-                    $crawlingList[$game->crawlingTeam->id]++;
-                }
+        $teams = [];
+        foreach($this->teams() as $team){
+            if($team->countCrawls($this->id) > 0){
+                array_push($teams, $team);
             }
         }
+        usort($teams, function($a, $b)
+        {
+            return $a->countCrawls($this->id) < $b->countCrawls($this->id);
+        });
+        return $teams;
+    }
 
-        ksort($crawlingList, SORT_NUMERIC);
+    public function winner(){
+        return $this->topList()[0];
+    }
 
-        $arr = [];
-        foreach ($crawlingList as $key => $value) {
-            array_push($arr, $key);
+    public function teams(){
+        $teams = [];
+
+        foreach ($this->games as $game) {
+            if(!in_array($game->team_1, $teams)){
+                array_push($teams, $game->team_1);
+            }
+            if(!in_array($game->team_2, $teams)){
+                array_push($teams, $game->team_2);
+            }
         }
-
-        return $arr;
-
+        return $teams;
     }
 
     public function status(){
@@ -124,10 +90,10 @@ class League extends Model
     }
 
     public function startDate(){
-        return $this->games()->orderBy('created_at')->first()->updated_at;
+        return $this->games()->orderBy('created_at')->first()->updated_at->format('Y.m.d H:i');
     }
 
     public function finishDate(){
-        return $this->games()->orderByDesc('updated_at')->first()->updated_at;
+        return $this->games()->orderByDesc('updated_at')->first()->updated_at->format('Y.m.d H:i');
     }
 }

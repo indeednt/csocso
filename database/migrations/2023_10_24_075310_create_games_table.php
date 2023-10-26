@@ -16,11 +16,10 @@ return new class extends Migration
         Schema::create('games', function (Blueprint $table) {
             $table->id();
             $table->foreignId('league_id')->references('id')->on('leagues')->cascadeOnDelete();
-            $table->date('date')->default(now());
             $table->foreignId('team_1_id')->references('id')->on('teams')->cascadeOnDelete();
             $table->foreignId('team_2_id')->references('id')->on('teams')->cascadeOnDelete();
-            $table->integer('team_1_score')->unsigned()->default(0);
-            $table->integer('team_2_score')->unsigned()->default(0);
+            $table->integer('team_1_score')->default(0);
+            $table->integer('team_2_score')->default(0);
             $table->timestamps();
         });
     }

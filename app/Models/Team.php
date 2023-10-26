@@ -22,8 +22,6 @@ class Team extends Model
 
     protected $table = 'teams';
 
-
-
     public function kapus(){
         return $this->hasOne(Player::class, 'id', 'kapus_id');
     }
@@ -44,12 +42,26 @@ class Team extends Model
         return $this->hasMany(Game::class, 'team_2_id', 'id');
     }
 
-    public function countCrawls(){
-        return $this->gamesWhereTeam1->where('team_1_score', 0)->count()
-             + $this->gamesWhereTeam2->where('team_2_score', 0)->count();
+    public function gamesWon($leagueId){
+        return $this->gamesWhereTeam1()->where('league_id', $leagueId)->where('team_1_score', 10)->count()
+            + $this->gamesWhereTeam2()->where('league_id', $leagueId)->where('team_2_score', 10)->count();
     }
 
-    public function addPlayer(){
+    public function countCrawls($leagueId){
+        return $this->gamesWhereTeam1()
+            ->where('league_id', $leagueId)
+            // where the other team won
+            ->where('team_2_score', 10)
+            ->where('team_1_score', 0)->count()
+        + $this->gamesWhereTeam2()
+            ->where('league_id', $leagueId)
+            // where the other team won
+            ->where('team_1_score', 10)
+            ->where('team_2_score', 0)->count();
+    }
 
+    public function countWins($leagueId){
+        return $this->gamesWhereTeam1()->where('league_id', $leagueId)->where('team_1_score', 0)->count()
+            + $this->gamesWhereTeam2()->where('league_id', $leagueId)->where('team_2_score', 0)->count();
     }
 }

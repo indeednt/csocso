@@ -26,8 +26,16 @@
                 {!! Form::label('kapus', 'Kapus:') !!}
                 {!! Form::select('kapus_id', $players) !!}
                 <br>
-                {!!  Form::submit('Játékos hozzáadása', ['class' => 'btn btn-success shadow mt-2']) !!}
-                {!!  Form::close('Csapat hozzáadása') !!}
+
+                @if ($errors)
+                    <span class="text-danger">{{ $errors->first() }}</span>
+                    <br>
+                @endif
+
+                <div class="col">
+                    {!!  Form::submit('Játékos hozzáadása', ['class' => 'btn btn-success shadow mt-2 mx-auto', 'style' => 'width: 300px']) !!}
+                    {!!  Form::close() !!}
+                </div>
             </div>
         </div>
     </div>
